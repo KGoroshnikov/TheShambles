@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - TriggerCrouch
+  - Movable
   layers:
   - Default
   - TransparentFX
