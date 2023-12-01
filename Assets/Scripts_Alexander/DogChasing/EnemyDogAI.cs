@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyDog : MonoBehaviour
+public class EnemyDogAI : MonoBehaviour
 {
     public Transform goal;
-
+    public bool startChasing = false;
+    
     private NavMeshAgent agent;
 
     private void Start()
@@ -19,11 +20,13 @@ public class EnemyDog : MonoBehaviour
 
     private void Update()
     {
+        if (!startChasing) return;
         agent.destination = goal.position;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!startChasing) return;
         if (collision.gameObject.tag != "Player") return;
         Checkpoint.LoadLastCheckpoint();
     }

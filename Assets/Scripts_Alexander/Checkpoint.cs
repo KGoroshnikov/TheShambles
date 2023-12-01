@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.IO;
-using UnityEditor.SearchService;
-using UnityEditorInternal;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -20,7 +17,7 @@ public class Checkpoint : MonoBehaviour
 
         checkPoints.Add(this);
 
-        if (checkPoints.Count == lastCheckpoint)
+        if (checkPoints.Count - 1 == lastCheckpoint)
             SaveState();
 
 
@@ -41,28 +38,32 @@ public class Checkpoint : MonoBehaviour
         lastCheckpoint = checkPoints.IndexOf(this);
         checkpointGained = true;
 
+        Debug.Log(lastCheckpoint + " triggered!");
+
+
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
         GameData data = new GameData(allObjects.Length);
         for (int i = 0; i < allObjects.Length; i++)
-            data.states[i] = new ObjectState(
-                allObjects[i].name,
-                allObjects[i].transform.position,
-                allObjects[i].transform.rotation);
+        {
+            GameObject go = allObjects[i];
+            data.states[i] = new ObjectState(go.name, go.transform.position, go.transform.rotation);
+        }
        
         File.WriteAllText("save.gd", JsonUtility.ToJson(data));
-
-        Debug.Log(lastCheckpoint + " triggered!");
     }
 
     public static void LoadLastCheckpoint()
     {
         GameData data = JsonUtility.FromJson<GameData>(File.ReadAllText("save.gd"));
-
+        
         foreach(ObjectState state in data.states)
         {
-            Transform transform = GameObject.Find(state.name).transform;
-            transform.position = state.position;
-            transform.rotation = state.rotation;
+            GameObject go = GameObject.Find(state.name);
+            go.transform.position = state.position;
+            go.transform.rotation = state.rotation;
+
+            EnemyDogAI ai = go.GetComponent<EnemyDogAI>();
+            if (ai != null) ai.startChasing = false;
         }
     }
 
