@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using UnityEditor.SearchService;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -17,15 +18,17 @@ public class Checkpoint : MonoBehaviour
     {
         Debug.Log(transform.position + " - " + checkPoints.Count);
 
+        checkPoints.Add(this);
+
         if (checkPoints.Count == lastCheckpoint)
             SaveState();
 
-        checkPoints.Add(this);
 
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (checkpointGained) return;
@@ -35,39 +38,55 @@ public class Checkpoint : MonoBehaviour
 
     private void SaveState()
     {
-        Debug.Log("Triggered!");
         lastCheckpoint = checkPoints.IndexOf(this);
         checkpointGained = true;
 
-        Dictionary<string, ObjectState> states = new Dictionary<string, ObjectState>();
-
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
-        foreach (GameObject go in allObjects)
-            states.Add(go.name, new ObjectState(go.transform.position, go.transform.rotation));
-        
-        File.WriteAllText("save.gd", JsonUtility.ToJson(states));
+        GameData data = new GameData(allObjects.Length);
+        for (int i = 0; i < allObjects.Length; i++)
+            data.states[i] = new ObjectState(
+                allObjects[i].name,
+                allObjects[i].transform.position,
+                allObjects[i].transform.rotation);
+       
+        File.WriteAllText("save.gd", JsonUtility.ToJson(data));
+
+        Debug.Log(lastCheckpoint + " triggered!");
     }
 
     public static void LoadLastCheckpoint()
     {
-        Dictionary<string, ObjectState> states = JsonUtility.FromJson<Dictionary<string, ObjectState>>(File.ReadAllText("save.gd"));
+        GameData data = JsonUtility.FromJson<GameData>(File.ReadAllText("save.gd"));
 
-        foreach(string name in states.Keys)
+        foreach(ObjectState state in data.states)
         {
-            Transform transform = GameObject.Find(name).transform;
-            transform.position = states[name].position;
-            transform.rotation = states[name].rotation;
+            Transform transform = GameObject.Find(state.name).transform;
+            transform.position = state.position;
+            transform.rotation = state.rotation;
+        }
+    }
+
+    [System.Serializable]
+    private class GameData
+    {
+        public ObjectState[] states;
+
+        public GameData(int stateCount)
+        {
+            states = new ObjectState[stateCount];
         }
     }
 
     [System.Serializable]
     private class ObjectState
     {
+        public string name;
         public Vector3 position;
         public Quaternion rotation;
 
-        public ObjectState(Vector3 position, Quaternion rotation)
+        public ObjectState(string name, Vector3 position, Quaternion rotation)
         {
+            this.name = name;
             this.position = position;
             this.rotation = rotation;
         }
