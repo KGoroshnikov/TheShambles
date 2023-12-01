@@ -21,12 +21,15 @@ public class Checkpoint : MonoBehaviour
 
         checkPoints.Add(this);
 
-        Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-        rigidbody.useGravity = false;
+        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.isKinematic = true;
     }
     private void OnTriggerEnter(Collider other)
     {
         if (checkpointGained) return;
+        if (other.tag != "Player") return;
+
         Debug.Log("Triggered!");
         lastCheckpoint = checkPoints.IndexOf(this);
         checkpointGained = true;

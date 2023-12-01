@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public bool jumpBack;
 
     void Start()
     {
@@ -13,7 +12,7 @@ public class TestScript : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * Time.deltaTime);
-        if (jumpBack) Checkpoint.LoadLastCheckpoint(this);
+        if (Input.GetKeyDown(KeyCode.L)) 
+            Checkpoint.LoadLastCheckpoint(this);
     }
 }
