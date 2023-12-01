@@ -1,29 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DogIteractionTrigger : MonoBehaviour
 {
-    public float grabSpeedMultiplier = 0.5f;
+    private Rigidbody rb;
 
-    void Start()
+    private void Update()
     {
-        Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-        rb.useGravity = false;
+        if (rb != null)
+        {
+            if (Input.GetMouseButton(0))
+                rb.isKinematic = false;
+            else rb.isKinematic = true;
+        }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (Input.GetMouseButton(0))
-        {
-            if (collision.gameObject.tag == "Movable")
-            {
-                Rigidbody rb = collision.rigidbody;
-
-
-            }
-        }
+        if (collision.gameObject.tag == "Movable")
+            rb = collision.rigidbody;
     }
 }
