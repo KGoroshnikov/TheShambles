@@ -13,6 +13,6 @@ public class TestScript : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L)) 
-            Checkpoint.LoadLastCheckpoint(this);
+            Checkpoint.LoadLastCheckpoint();
     }
 }
