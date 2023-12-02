@@ -6,12 +6,13 @@ public class DogMovement : MonoBehaviour
 {
     public float rotationSpeed;
     public float moveSpeed;
+    public float runSpeed;
     public float crouchedMoveSpeed;
     private float currentSpeed;
     public float jumpForce;
-    public float jumpKD;
 
     public Rigidbody rb;
+    public TipUI tipUI;
 
 
     public Collider normalCollider;
@@ -20,13 +21,23 @@ public class DogMovement : MonoBehaviour
     public bool isCrouched;
     public bool underZabor;
     public bool canJump = true;
+    private bool holdingBox;
+    public LayerMask lm;
 
     private void Start()
     {
         currentSpeed = moveSpeed;
     }
 
-    void ResetJump() => canJump = true;
+    public void boxTaken()
+    {
+        holdingBox = true;
+    }
+
+    public void boxDropped()
+    {
+        holdingBox = false;
+    }
 
     void Update()
     {
@@ -45,11 +56,26 @@ public class DogMovement : MonoBehaviour
             rb.MovePosition(transform.position + dirMove * currentSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyUp(KeyCode.Space) && canJump && !underZabor)
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 0.5f, lm))
+        {
+            canJump = true;
+        }
+        else
         {
             canJump = false;
-            Invoke("ResetJump", jumpKD);
-            //rb.AddForce(Vector3.up * jumpForce + transform.forward * 20, ForceMode.Impulse);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) && !holdingBox && !underZabor)
+            currentSpeed = runSpeed;
+        if (!Input.GetKey(KeyCode.LeftShift) && !underZabor || holdingBox)
+        {
+            currentSpeed = moveSpeed;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space) && canJump && !underZabor && !holdingBox)
+        {
+            canJump = false;
             rb.velocity += Vector3.up * jumpForce + transform.forward * 2;
         }
 
@@ -81,6 +107,7 @@ public class DogMovement : MonoBehaviour
     {
         if (other.gameObject.name == "TriggerCrouch")
         {
+            tipUI.ShowTip("CTRL", "CROUCH");
             underZabor = true;
         }
     }
@@ -99,6 +126,7 @@ public class DogMovement : MonoBehaviour
         if (other.gameObject.name == "TriggerCrouch")
         {
             underZabor = false;
+            tipUI.HideTip();
             if (!isCrouched && currentSpeed == crouchedMoveSpeed)
             {
                 normalCollider.enabled = true;
