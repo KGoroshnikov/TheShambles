@@ -10,6 +10,8 @@ public class InteractK : MonoBehaviour
     public float progressLoose;
     public Rigidbody rb;
 
+    public TipUI tipUI;
+
     public float dogLength;
     private Transform handlePoint;
     private Vector3 direct;
@@ -38,6 +40,7 @@ public class InteractK : MonoBehaviour
             progress = 0;
             if (interacting)
             {
+                tipUI.HideTip();
                 interacting = false;
                 rb.isKinematic = false;
             }
@@ -52,6 +55,7 @@ public class InteractK : MonoBehaviour
 
         if (progress >= 1)
         {
+            tipUI.HideTip();
             interacting = false;
             unlocked = true;
             rb.isKinematic = false;
@@ -64,6 +68,7 @@ public class InteractK : MonoBehaviour
     {
         if (other.gameObject.name == "openableObject" && !interacting)
         {
+            tipUI.ShowTip("e", "interact");
             doorObj = null;
             handlePoint = null;
             canInteract = false;
@@ -82,6 +87,7 @@ public class InteractK : MonoBehaviour
     {
         if (other.gameObject.name == "openableObject" && !interacting)
         {
+            tipUI.HideTip();
             doorObj = null;
             handlePoint = null;
             canInteract = false;

@@ -16,16 +16,32 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform target;
 
     public float currentAngle;
+    private Vector3 p;
+
+    private bool mouseActive = true;
 
     private void Update()
     { 
-        float mouseX = Input.GetAxis("Mouse X") * sens;
-        currentAngle += mouseX;
-        Vector3 p = new Vector3(Mathf.Cos(currentAngle), 0, Mathf.Sin(currentAngle)) * radius;
-        transform.LookAt(target.position + offsetLook);
+        if (mouseActive)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * sens;
+            currentAngle += mouseX;
+            p = new Vector3(Mathf.Cos(currentAngle), 0, Mathf.Sin(currentAngle)) * radius;
+            transform.LookAt(target.position + offsetLook);
+        }
 
         Vector3 targetPosition = target.position + offset + p;
         targetPosition.y = transform.position.y;
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+    }
+
+    public void boxTaken()
+    {
+        mouseActive = false;
+    }
+
+    public void boxDropped()
+    {
+        mouseActive = true;
     }
 }
