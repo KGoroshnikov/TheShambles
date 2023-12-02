@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour
 {
@@ -18,12 +19,19 @@ public class Checkpoint : MonoBehaviour
         checkPoints.Add(this);
 
         if (checkPoints.Count - 1 == lastCheckpoint)
+        {
             SaveState();
-
+            Invoke("MovePlayer", 0);
+        }
 
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
+    }
+    private void MovePlayer()
+    {
+        lastCheckpoint = PlayerPrefs.GetInt("Last Checkpoint", 0);
+        GameObject.FindGameObjectWithTag("Player").transform.position = checkPoints[lastCheckpoint].transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,59 +45,14 @@ public class Checkpoint : MonoBehaviour
     {
         lastCheckpoint = checkPoints.IndexOf(this);
         checkpointGained = true;
+        PlayerPrefs.SetInt("Last Checkpoint", lastCheckpoint);
 
         Debug.Log(lastCheckpoint + " triggered!");
-
-
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
-        GameData data = new GameData(allObjects.Length);
-        for (int i = 0; i < allObjects.Length; i++)
-        {
-            GameObject go = allObjects[i];
-            data.states[i] = new ObjectState(go.name, go.transform.position, go.transform.rotation);
-        }
-       
-        File.WriteAllText("save.gd", JsonUtility.ToJson(data));
     }
 
     public static void LoadLastCheckpoint()
     {
-        GameData data = JsonUtility.FromJson<GameData>(File.ReadAllText("save.gd"));
-        
-        foreach(ObjectState state in data.states)
-        {
-            GameObject go = GameObject.Find(state.name);
-            go.transform.position = state.position;
-            go.transform.rotation = state.rotation;
-
-            EnemyDogAI ai = go.GetComponent<EnemyDogAI>();
-            if (ai != null) ai.startChasing = false;
-        }
-    }
-
-    [System.Serializable]
-    private class GameData
-    {
-        public ObjectState[] states;
-
-        public GameData(int stateCount)
-        {
-            states = new ObjectState[stateCount];
-        }
-    }
-
-    [System.Serializable]
-    private class ObjectState
-    {
-        public string name;
-        public Vector3 position;
-        public Quaternion rotation;
-
-        public ObjectState(string name, Vector3 position, Quaternion rotation)
-        {
-            this.name = name;
-            this.position = position;
-            this.rotation = rotation;
-        }
+        checkPoints.Clear();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

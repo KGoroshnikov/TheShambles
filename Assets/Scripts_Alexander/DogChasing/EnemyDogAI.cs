@@ -20,8 +20,19 @@ public class EnemyDogAI : MonoBehaviour
 
     private void Update()
     {
-        if (!startChasing) return;
+        if (!startChasing)
+        {
+            agent.destination = transform.parent.position;
+            agent.stoppingDistance = 5;
+            return;
+        }
         agent.destination = goal.position;
+        agent.stoppingDistance = 0;
+    }
+
+    public void DisableDogs()
+    {
+        gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -30,4 +41,6 @@ public class EnemyDogAI : MonoBehaviour
         if (collision.gameObject.tag != "Player") return;
         Checkpoint.LoadLastCheckpoint();
     }
+
+    public NavMeshAgent GetNavMeshAgent() => agent;
 }
