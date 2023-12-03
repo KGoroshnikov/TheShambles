@@ -13,9 +13,13 @@ public class PostEffectChangeTrigger : MonoBehaviour
     [SerializeField]
     private string featureName = null;
 
+    [Min(1)]
     public int pixelSize = 6;
+    [Min(1)]
     public float colorDepth = 32;
+    [Range(0, 0.01f)]
     public float dithering = 0.0005f;
+    [Range(0, 1)]
     public float lsd = 0;
 
     private Animation animation;

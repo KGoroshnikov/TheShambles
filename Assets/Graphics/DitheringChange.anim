@@ -31,7 +31,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.05533597
       - serializedVersion: 3
-        time: 2
+        time: 0.8333333
         value: 32
         inSlope: 0
         outSlope: 0
@@ -54,20 +54,20 @@ AnimationClip:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.005910389
+        outSlope: -0.005910389
         tangentMode: 0
-        weightedMode: 0
+        weightedMode: 3
         inWeight: 0.33333334
-        outWeight: 0.057063717
+        outWeight: 0.3977018
       - serializedVersion: 3
-        time: 2
+        time: 0.8333333
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.001445945
+        outSlope: 0.001445945
         tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.18361354
+        weightedMode: 3
+        inWeight: 0.4034473
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -91,7 +91,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2
+    m_StopTime: 0.8333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -121,7 +121,7 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.05533597
       - serializedVersion: 3
-        time: 2
+        time: 0.8333333
         value: 32
         inSlope: 0
         outSlope: 0
@@ -144,20 +144,20 @@ AnimationClip:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.005910389
+        outSlope: -0.005910389
         tangentMode: 0
-        weightedMode: 0
+        weightedMode: 3
         inWeight: 0.33333334
-        outWeight: 0.057063717
+        outWeight: 0.3977018
       - serializedVersion: 3
-        time: 2
+        time: 0.8333333
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.001445945
+        outSlope: 0.001445945
         tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.18361354
+        weightedMode: 3
+        inWeight: 0.4034473
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
