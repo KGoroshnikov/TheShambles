@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour
@@ -9,7 +10,11 @@ public class Checkpoint : MonoBehaviour
     private static List<Checkpoint> checkPoints = new List<Checkpoint>();
     private static int lastCheckpoint = 0;
 
+    public string playerObjectName;
+
     public bool checkpointGained;
+
+    public UnityEvent afterGained;
 
 
     private void Start()
@@ -31,7 +36,8 @@ public class Checkpoint : MonoBehaviour
     private void MovePlayer()
     {
         lastCheckpoint = PlayerPrefs.GetInt("Last Checkpoint", 0);
-        GameObject.FindGameObjectWithTag("Player").transform.position = checkPoints[lastCheckpoint].transform.position;
+
+        GameObject.Find(playerObjectName).transform.position = checkPoints[lastCheckpoint].transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,6 +45,7 @@ public class Checkpoint : MonoBehaviour
         if (checkpointGained) return;
         if (other.tag != "Player") return;
         SaveState();
+        afterGained.Invoke();
     }
 
     private void SaveState()

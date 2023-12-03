@@ -89,10 +89,10 @@ Shader "Hidden/Dithering"
 					float brightness = 0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b;
 
 					float dither = ditherTable[pixelCoord.x % 4][pixelCoord.y % 4];
-					float newBrightness = brightness + dither * _DitherStrength;
+					float newBrightness = brightness + dither * _DitherStrength * 0.001;
 					fixed4 color = col / brightness * round(newBrightness * _ColorDepth) / _ColorDepth;
 
-					col += dither * _DitherStrength;
+					col += dither * _DitherStrength * 0.001;
 					fixed4 rainbowColor = round(col * _ColorDepth) / _ColorDepth;
 					return color + (rainbowColor - color) * _LSD;
 				}
