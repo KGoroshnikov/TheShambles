@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyDogAI : MonoBehaviour
 {
@@ -13,21 +14,50 @@ public class EnemyDogAI : MonoBehaviour
     
     private NavMeshAgent agent;
 
+    public Animator animator;
+    private string state = "Idle";
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator.Play("Idle", -1, Random.value);
+        agent.stoppingDistance = 0;
+    }
+
+    public void StartChase()
+    {
+        agent.destination = goal.position;
+        state = "Chase";
+        startChasing = true;
+        animator.speed = 2.2f;
+        animator.Play("walkSave", -1, Random.value);
+    }
+
+    public void StopChase()
+    {
+        startChasing = false;
     }
 
     private void Update()
     {
+        if (!agent.pathPending && state != "Idle")
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    animator.speed = 1f;
+                    animator.CrossFade("Idle", 0.5f);
+                    state = "Idle";
+                }
+            }
+        }
+
         if (!startChasing)
         {
-            agent.destination = transform.parent.position;
-            agent.stoppingDistance = 5;
             return;
         }
         agent.destination = goal.position;
-        agent.stoppingDistance = 0;
     }
 
     public void DisableDogs()

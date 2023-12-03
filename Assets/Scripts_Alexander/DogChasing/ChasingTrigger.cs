@@ -22,7 +22,7 @@ public class ChasingTrigger : MonoBehaviour
         if (other.tag != "Player") return;
         for (int i = 0; i < dogs.Length; i++)
         {
-            dogs[i].startChasing = true;
+            dogs[i].StartChase();
             dogs[i].CancelInvoke("DisableDogs");
         }
     }
@@ -33,8 +33,8 @@ public class ChasingTrigger : MonoBehaviour
         for (int i = 0; i < dogs.Length; i++)
         {
             NavMeshAgent agent = dogs[i].GetNavMeshAgent();
-            dogs[i].Invoke("DisableDogs", 10);
-            dogs[i].startChasing = false;
+            //dogs[i].Invoke("DisableDogs", 10);
+            dogs[i].StopChase();
         }
     }
 }

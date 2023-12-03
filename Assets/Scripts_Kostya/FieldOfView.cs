@@ -10,6 +10,9 @@ public class FieldOfView : MonoBehaviour
     public float radius;
     [Range(0, 360)]
     public float angle;
+    private float angleSave;
+
+    public float closeRange;
 
     public GameObject playerRef;
 
@@ -20,11 +23,20 @@ public class FieldOfView : MonoBehaviour
 
     public Transform[] allPoints;
     public NavMeshAgent agent;
+    public Animator animator;
+
+    public float chaseSpeed;
+    public float animSpeedChase;
+    private float defaultSpeed;
+
+    private string state = "Walk";
 
     private bool chase;
 
     private void Start()
     {
+        angleSave = angle;
+        defaultSpeed = agent.speed;
         //playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
         InvokeRepeating("GetTarget", 0, 6);
@@ -43,6 +55,8 @@ public class FieldOfView : MonoBehaviour
 
     void GetTarget()
     {
+        animator.CrossFade("Walk", 0.5f);
+        state = "Walk";
         NavMeshHit myNavHit;
         if (NavMesh.SamplePosition(allPoints[Random.Range(0, allPoints.Length)].position, out myNavHit, 100, -1))
         {
@@ -60,12 +74,33 @@ public class FieldOfView : MonoBehaviour
                 agent.SetDestination(myNavHit.position);
             }
         }
+
+        if (!agent.pathPending && state != "Idle")
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    animator.CrossFade("Idle", 0.5f);
+                    state = "Idle";
+                }
+            }
+        }
+
+        if (Vector3.Distance(playerRef.transform.position, transform.position) <= closeRange)
+        {
+            angle = 360;
+        }
+        else if (angle != angleSave) angle = angleSave;
     }
 
     void StopChase()
     {
         CancelInvoke("StopChase");
         chase = false;
+        state = "Walk";
+        animator.speed = 1;
+        agent.speed = defaultSpeed;
     }
 
     private void FieldOfViewCheck()
@@ -96,6 +131,10 @@ public class FieldOfView : MonoBehaviour
         {
             CancelInvoke("StopChase");
             chase = true;
+            animator.CrossFade("Walk", 0.5f);
+            state = "Chase";
+            animator.speed = animSpeedChase;
+            agent.speed = chaseSpeed;
         }
         else if (!canSeePlayer && chase)
         {
