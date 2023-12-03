@@ -6687,7 +6687,7 @@ GameObject:
   - component: {fileID: 6868314263760292776}
   - component: {fileID: 8612580350415893218}
   - component: {fileID: 5090107801027434102}
-  - component: {fileID: 8612580350415893219}
+  - component: {fileID: 8612580350415893221}
   - component: {fileID: 8612580350415893220}
   m_Layer: 0
   m_Name: default
@@ -6846,8 +6846,8 @@ GameObject:
   - component: {fileID: 3026757858732216589}
   - component: {fileID: 204380933128267847}
   - component: {fileID: 3743513016413064403}
-  - component: {fileID: 6104377790390665784}
   - component: {fileID: 6104377790390665783}
+  - component: {fileID: 6104377790390665784}
   m_Layer: 0
   m_Name: default
   m_TagString: Newspaper
@@ -6868,8 +6868,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: Beware! Stray dogs!
---- !u!64 &6104377790390665784
-MeshCollider:
+--- !u!65 &6104377790390665784
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -6883,13 +6883,12 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 6720e8060aa258342947dd92db4e7f39, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1.0000001, y: 0.20000003, z: 0.9000001}
+  m_Center: {x: 0, y: 0.10000002, z: 0.049999528}
 --- !u!4 &6278320643262085872
 Transform:
   m_ObjectHideFlags: 0
@@ -11919,28 +11918,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2442930190854150291}
   m_Mesh: {fileID: -2432090755550338912, guid: 78073dcb6aa51fd43b7f2545b66b6c6e, type: 3}
---- !u!64 &8612580350415893219
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2442930190854150291}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 78073dcb6aa51fd43b7f2545b66b6c6e, type: 3}
 --- !u!114 &8612580350415893220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11954,6 +11931,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: A strange object from the sky
+--- !u!65 &8612580350415893221
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2442930190854150291}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7999998, y: 0.19999999, z: 1.6999999}
+  m_Center: {x: -0.09999999, y: 0.099999994, z: -0.14999999}
 --- !u!4 &8638517892505589488
 Transform:
   m_ObjectHideFlags: 0
@@ -12071,8 +12069,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: Is this really the end?
---- !u!64 &9192438873159624618
-MeshCollider:
+--- !u!65 &9192438873159624618
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -12086,13 +12084,12 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 989b9f919bd60604a8f609ae8c84a1df, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1.0000001, y: 0.20000003, z: 0.9000001}
+  m_Center: {x: 0, y: 0.10000002, z: 0.049999528}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
